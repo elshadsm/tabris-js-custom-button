@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="tabris.js.custom.button" version="0.1.0">
+  <name>Tabris Js Custom Button</name>
+  <description>
+    Example Tabris.js App
+  </description>
+  <author email="elshad@eclipsesource.com">
+    Elshad Seyidmammadov
+  </author>
+  <preference name="EnableDeveloperConsole" value="$IS_DEBUG" />
+</widget>
