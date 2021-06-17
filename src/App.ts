@@ -12,7 +12,11 @@ export class App {
       new CustomButton({
         left: 16,
         right: 16,
-        centerY: 0
+        centerY: 0,
+        actionText: 'Active State',
+        progressText: 'Progress State',
+        successText: 'Success State',
+        errorText: 'Error State'
       }).onSelect(async ({ target }) => this.handleButtonSelect(target).catch(error => console.error(error)))
     );
   }

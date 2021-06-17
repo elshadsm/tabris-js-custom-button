@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { Color, Composite, EventObject, Listeners, Properties } from 'tabris';
-import { component, event, getById } from 'tabris-decorators';
+import { component, event, getById, property } from 'tabris-decorators';
 import { StateView } from './StateView';
 
 const BUTTON_HEIGHT = 56;
@@ -9,6 +9,11 @@ const BUTTON_HEIGHT = 56;
 export class CustomButton extends Composite {
 
   @event onSelect: Listeners<EventObject<this>>;
+
+  @property actionText: string;
+  @property progressText: string;
+  @property successText: string;
+  @property errorText: string;
 
   @getById resultView: StateView;
   @getById progressView: StateView;
@@ -40,14 +45,14 @@ export class CustomButton extends Composite {
       new StateView({ id: 'resultView' }),
       new StateView({
         id: 'progressView',
-        text: 'Progress State',
+        text: this.progressText,
         textColor: '#F57F17',
         background: '#FFFDE7',
         renderActivityIndicator: true
       }),
       new StateView({
         id: 'actionView',
-        text: 'Active State',
+        text: this.actionText,
         textColor: Color.white,
         background: '#03A9F4',
         highlightOnTouch: true
@@ -81,7 +86,7 @@ export class CustomButton extends Composite {
     this.animateStateView(this.progressView, BUTTON_HEIGHT);
     this.animateStateView(this.resultView, 0);
     this.resultView.set({
-      text: result === 'success' ? 'Success State' : 'Error State',
+      text: result === 'success' ? this.successText : this.errorText,
       background: result === 'success' ? '#E8F5E9' : '#FFEBEE',
       textColor: result === 'success' ? '#4CAF50' : '#F44336'
     });
