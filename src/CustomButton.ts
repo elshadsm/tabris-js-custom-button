@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-floating-promises */
 import { Color, Composite, EventObject, Listeners, Properties } from 'tabris';
 import { component, event, getById } from 'tabris-decorators';
 import { StateView } from './StateView';
@@ -17,7 +18,7 @@ export class CustomButton extends Composite {
 
   public set state(value: StateType) {
     this._state = value;
-    this.updateState();
+    this.updateStateViews();
   }
 
   public get state(): StateType {
@@ -31,7 +32,7 @@ export class CustomButton extends Composite {
       ...propertie
     });
     this.createUi();
-    this.state = 'action'
+    this.state = 'action';
   }
 
   private createUi(): void {
@@ -54,46 +55,35 @@ export class CustomButton extends Composite {
     );
   }
 
-  private updateState(): void {
+  private updateStateViews(): void {
     switch (this.state) {
-      case 'action': this.handleActionState().catch(error => console.error(error)); break;
-      case 'progress': this.handleProgressState(); break;
-      case 'success': this.handleSuccessState(); break;
-      case 'error': this.handleErrorState(); break;
+      case 'action': this.applyActionState(); break;
+      case 'progress': this.applyProgressState(); break;
+      case 'success': this.applyResultState('success'); break;
+      case 'error': this.applyResultState('error'); break;
     }
   }
 
-  private async handleActionState(): Promise<void> {
+  private async applyActionState(): Promise<void> {
     await this.animateStateView(this.actionView, 0);
-    this.animateStateView(this.progressView, - BUTTON_HEIGHT).catch(error => console.error(error));
-    this.animateStateView(this.resultView, - BUTTON_HEIGHT).catch(error => console.error(error));
+    this.animateStateView(this.progressView, -BUTTON_HEIGHT);
+    this.animateStateView(this.resultView, - BUTTON_HEIGHT);
   }
 
-  private handleProgressState(): void {
-    this.animateStateView(this.actionView, BUTTON_HEIGHT).catch(error => console.error(error));
-    this.animateStateView(this.progressView, 0).catch(error => console.error(error));
-    this.animateStateView(this.resultView, - BUTTON_HEIGHT).catch(error => console.error(error));
+  private applyProgressState(): void {
+    this.animateStateView(this.actionView, BUTTON_HEIGHT);
+    this.animateStateView(this.progressView, 0);
+    this.animateStateView(this.resultView, -BUTTON_HEIGHT);
   }
 
-  private handleSuccessState(): void {
-    this.animateStateView(this.actionView, BUTTON_HEIGHT).catch(error => console.error(error));
-    this.animateStateView(this.progressView, BUTTON_HEIGHT).catch(error => console.error(error));
-    this.animateStateView(this.resultView, 0).catch(error => console.error(error));
+  private applyResultState(result: 'success' | 'error'): void {
+    this.animateStateView(this.actionView, BUTTON_HEIGHT);
+    this.animateStateView(this.progressView, BUTTON_HEIGHT);
+    this.animateStateView(this.resultView, 0);
     this.resultView.set({
-      text: 'Success State',
-      background: '#E8F5E9',
-      textColor: '#4CAF50'
-    });
-  }
-
-  private handleErrorState(): void {
-    this.animateStateView(this.actionView, BUTTON_HEIGHT).catch(error => console.error(error));
-    this.animateStateView(this.progressView, BUTTON_HEIGHT).catch(error => console.error(error));
-    this.animateStateView(this.resultView, 0).catch(error => console.error(error));
-    this.resultView.set({
-      text: 'Error State',
-      background: '#FFEBEE',
-      textColor: '#F44336'
+      text: result === 'success' ? 'Success State' : 'Error State',
+      background: result === 'success' ? '#E8F5E9' : '#FFEBEE',
+      textColor: result === 'success' ? '#4CAF50' : '#F44336'
     });
   }
 
@@ -101,7 +91,7 @@ export class CustomButton extends Composite {
     return view.animate(
       { transform: { translationY } },
       { easing: 'linear', duration: 150 }
-    );
+    ).catch(error => console.error(error));
   }
 
 }

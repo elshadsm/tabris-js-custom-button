@@ -7,7 +7,7 @@ export class App {
     contentView.background = '#E8EAF6';
   }
 
-  public start() {
+  public start(): void {
     contentView.append(
       new CustomButton({
         left: 16,
@@ -17,7 +17,7 @@ export class App {
     );
   }
 
-  private async handleButtonSelect(button: CustomButton) {
+  private async handleButtonSelect(button: CustomButton): Promise<void> {
     button.state = 'progress';
     await new Promise(resolve => setTimeout(resolve, 2000));
     button.state = 'success';

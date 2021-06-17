@@ -1,5 +1,10 @@
-import { ActivityIndicator, ColorValue, Composite, LayoutData, Properties, TextView, Widget } from 'tabris';
+import {
+  ActivityIndicator, ColorValue, Composite, Font,
+  LayoutData, Properties, TextView, Widget
+} from 'tabris';
 import { bind, component, property } from 'tabris-decorators';
+
+const CONTENT_FONT = Font.from({ size: 18, weight: 'medium' });
 
 @component
 export class StateView extends Composite {
@@ -13,17 +18,17 @@ export class StateView extends Composite {
       layoutData: LayoutData.stretch,
       ...propertie
     });
-    this.append(...this.getComponents());
+    this.append(...this.createComponents());
   }
 
-  private getComponents(): Widget[] {
+  private createComponents(): Widget[] {
     if (this.renderActivityIndicator) {
       return [
         new TextView({
           top: 16,
           bottom: 16,
           centerX: 0,
-          font: { size: 18, weight: 'medium' }
+          font: CONTENT_FONT
         }),
         new ActivityIndicator({
           left: [LayoutData.prev, 16],
@@ -41,7 +46,7 @@ export class StateView extends Composite {
         right: 16,
         bottom: 16,
         alignment: 'centerX',
-        font: { size: 18, weight: 'medium' }
+        font: CONTENT_FONT
       })
     ];
   }
