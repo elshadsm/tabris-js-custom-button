@@ -21,6 +21,16 @@ export class CustomButton extends Composite {
 
   private _state: StateType;
 
+  constructor(properties: Properties<CustomButton>) {
+    super({
+      height: BUTTON_HEIGHT,
+      cornerRadius: BUTTON_HEIGHT / 2,
+      ...properties
+    });
+    this.createUi();
+    this.state = 'action';
+  }
+
   public set state(value: StateType) {
     this._state = value;
     this.updateStateViews();
@@ -28,16 +38,6 @@ export class CustomButton extends Composite {
 
   public get state(): StateType {
     return this._state;
-  }
-
-  constructor(propertie: Properties<CustomButton>) {
-    super({
-      height: BUTTON_HEIGHT,
-      cornerRadius: BUTTON_HEIGHT / 2,
-      ...propertie
-    });
-    this.createUi();
-    this.state = 'action';
   }
 
   private createUi(): void {

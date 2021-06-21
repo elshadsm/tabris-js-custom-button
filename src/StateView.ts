@@ -13,10 +13,10 @@ export class StateView extends Composite {
   @property @bind('TextView.textColor') textColor: ColorValue;
   @property({ default: false }) renderActivityIndicator: boolean;
 
-  constructor(propertie: Properties<StateView>) {
+  constructor(properties: Properties<StateView>) {
     super({
       layoutData: LayoutData.stretch,
-      ...propertie
+      ...properties
     });
     this.append(...this.createComponents());
   }
